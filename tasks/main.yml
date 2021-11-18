@@ -1,0 +1,27 @@
+---
+- name: Create {{ install_dir }} directory
+  file:
+    path: "{{ install_dir }}"
+    state: directory
+
+- name: Install Go+BoringCrypto {{ version }}
+  unarchive:
+    creates: "{{ install_dir }}/go{{ version }}/bin/go"
+    dest: "/tmp"
+    remote_src: true
+    src: "{{ src_url }}"
+
+
+- name: Rename go folder into go{{ version }}
+  command: mv /tmp/go {{ install_dir }}/go{{ version }}
+  become: yes
+  args:
+    creates: "{{ install_dir }}/go{{ version }}"
+
+- name: Create symlink for boring go {{ version }}
+  ansible.builtin.file:
+    src: "{{ install_dir }}/go{{ version }}/"
+    dest: "{{ install_dir }}/go"
+    state: link
+  when: create_symlink == true  
+
