@@ -29,7 +29,12 @@ Example Playbook
 ```yaml
 - hosts: all
   roles:
-    - role: ansible-role-ansible-role-boring-go
+    - role: ansible-role-boring-go
+      vars:
+        install_dir: /opt/boring
+        src_url: https://storage.googleapis.com/go-boringcrypto/go1.15.8b5.linux-amd64.tar.gz
+        version: 1.15
+        create_symlink: true
 ```
 
 License
